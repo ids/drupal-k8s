@@ -1,0 +1,4 @@
+deployments/**
+!deployments/drupal7-example
+!deployments/drupal7-example/drupal.conf
+!deployments/README.md

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+mysqldump --host $1 -u root -p$2 drupaldb > drupaldb_sample.sql

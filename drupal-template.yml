@@ -1,0 +1,40 @@
+
+- hosts: all
+  become: false
+  any_errors_fatal: true
+  gather_facts: false
+  vars:
+
+    drupal_cluster_home: "deployments/{{ drupal7_stack_name }}"
+    
+  tasks:
+
+  - name: Determine cluster_pkg_folder
+    set_fact:
+      cluster_pkg_folder: "{{ inventory_dir | replace(playbook_dir + '/deployments/', '') }}"
+    when: cluster_pkg_folder is undefined
+    run_once: true
+
+  - debug: var=cluster_pkg_folder
+    run_once: true
+
+  - set_fact: drupal_cluster_home="deployments/{{ cluster_pkg_folder }}"
+
+  - name: Ensure the cluster folder exists
+    local_action:
+      module: shell
+      _raw_params: "if [ ! -d {{ drupal_cluster_home }} ]; then mkdir {{ drupal_cluster_home }}; fi"
+    become: false
+    run_once: true
+    ignore_errors: true
+
+  - name: Generate the Drupal manifest
+    local_action:
+      module: template
+      src: templates/drupal.j2
+      dest: "{{ drupal_cluster_home }}/drupal.yml"
+      mode: 0766
+    run_once: true
+    become: false
+
+    
