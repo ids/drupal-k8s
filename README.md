@@ -75,7 +75,16 @@ In the deployment configuration file, the settings for the NFS mapping are as fo
 
 ## Drupal Rolling Deployments
 
-Simply updating the image to the __themed__ variant is a good way to test rolling deployments.  Manually edit the generated __drupal.yml__ file and change the __image/tag__ and then simply apply:
+Simply updating the image to the __themed__ variant is a good way to test rolling deployments.  Manually edit the generated __drupal.yml__ file and change the __image/tag__:
+
+Eg.
+
+        containers:
+            - name: test-drupal
+              image: idstudios/drupal:themed
+
+
+And then simply apply the changes:
 
     kubectl apply -f drupal.yml
 
