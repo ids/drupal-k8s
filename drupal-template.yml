@@ -5,7 +5,7 @@
   gather_facts: false
   vars:
 
-    drupal_cluster_home: "deployments/{{ drupal7_stack_name }}"
+    drupal_deployment_home: "deployments/{{ drupal7_stack_name }}"
     
   tasks:
 
@@ -18,12 +18,12 @@
   - debug: var=cluster_pkg_folder
     run_once: true
 
-  - set_fact: drupal_cluster_home="deployments/{{ cluster_pkg_folder }}"
+  - set_fact: drupal_deployment_home="deployments/{{ cluster_pkg_folder }}"
 
-  - name: Ensure the cluster folder exists
+  - name: Ensure the deployment folder exists
     local_action:
       module: shell
-      _raw_params: "if [ ! -d {{ drupal_cluster_home }} ]; then mkdir {{ drupal_cluster_home }}; fi"
+      _raw_params: "if [ ! -d {{ drupal_deployment_home }} ]; then mkdir {{ drupal_deployment_home }}; fi"
     become: false
     run_once: true
     ignore_errors: true
@@ -32,9 +32,44 @@
     local_action:
       module: template
       src: templates/drupal.j2
-      dest: "{{ drupal_cluster_home }}/drupal.yml"
-      mode: 0766
+      dest: "{{ drupal_deployment_home }}/drupal.yml"
+      mode: 0755
     run_once: true
     become: false
 
+  - name: Generate the CoreOS Tectonic manifest
+    local_action:
+      module: template
+      src: templates/drupal-tectonic-ingress.j2
+      dest: "{{ drupal_deployment_home }}/drupal-tectonic-ingress.yml"
+      mode: 0755
+    run_once: true
+    become: false
+    
+
+  - name: Ensure the deployment folder exists
+    local_action:
+      module: shell
+      _raw_params: "if [ ! -d {{ drupal_deployment_home }}/loadtests ]; then mkdir {{ drupal_deployment_home }}/loadtests; fi"
+    become: false
+    run_once: true
+    ignore_errors: true
+    
+  - name: Generate the medium load tests
+    local_action:
+      module: template
+      src: templates/tests/drupal-load-test-med.j2
+      dest: "{{ drupal_deployment_home }}/loadtests/med_load.yml"
+      mode: 0755
+    run_once: true
+    become: false
+    
+  - name: Generate the heavy load tests
+    local_action:
+      module: template
+      src: templates/tests/drupal-load-test-heavy.j2
+      dest: "{{ drupal_deployment_home }}/loadtests/heavy_load.yml"
+      mode: 0755
+    run_once: true
+    become: false
     
