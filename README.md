@@ -73,6 +73,26 @@ In the deployment configuration file, the settings for the NFS mapping are as fo
 
 > Unfortunately this requires the manual step of pre-configuring the sample files on the target NFS share before drupal stack deployment.
 
+## Drupal Tectonic Ingress
+
+A sample __Tectonic Ingress__ is created that will do host header routing for the __drupal_domain__ over port 80 (SSL termination coming soon).
+
+    kubectl apply -f drupal-tectonic-ingress.yml
+
+> This is used in conjuction with the generated blazemeter scripts to perform the load testing.
+
+## Drupal Blazemeter Load Testing
+
+Example [Blazemeter](https://www.blazemeter.com/) scripts are created based on the configured __drupal_domain__ and sample data URLs to exert __moderate__ and __heavy__ load on the __drupal stack__.
+
+    bzt loadtests/med_load.yml
+
+or
+
+    bzt loadtests/heavy_load.yml
+
+> These can be adjusted and extended as needed and serve as examples.
+
 ## Drupal Rolling Deployments
 
 Simply updating the image to the __themed__ variant is a good way to test rolling deployments.  Manually edit the generated __drupal.yml__ file and change the __image/tag__:
@@ -91,3 +111,5 @@ And then simply apply the changes:
 > You can use the __idstudios/drupal:themed__ variant to test a deployment.
 
 The deployment will begin a rolling update, as this is what __Deployments__ do by default in Kubernetes.
+
+> Combining the __Blazemeter__ load testing with a __rolling deployment__ really demonstrates what makes Kubernetes so amazing!
