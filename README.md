@@ -3,7 +3,15 @@ Drupal on Kubernetes
 
 Drupal manifests for kubernetes deployment.
 
-## Ansible Template Approach
+1. [Ansible Template Generated Manifests](#ansible-template-generated-manifests)
+2. [Ansible Hosts File Configuration](#ansible-hosts-file-configuration)
+3. [Sample Data](#sample-data)
+4. [Blazemeter Load Testing](#blazemeter-load-testing)
+4. [Tectonic Ingress](#tectonic-ingress)
+4. [Rolling Deployments](#rolling-deployments)
+
+
+## Ansible Template Generated Manifests
 
 Uses ansible templates to generate __Drupal__ yaml manifests based on configuration information supplied via an ansible inventory file.
 
@@ -23,7 +31,7 @@ From within the __deployment package folder__ package folder apply the generated
 
 Front end proxying and ingress via Traefik, Nginx or Tectonic Ingress is left as an excercise for the user.
 
-## Ansible Drupal Template Configuration File
+## Ansible Hosts File Configuration
 
 Fairly self explanatory, adjust to your environment:
 
@@ -51,7 +59,7 @@ This values supplied in this file will generate the resulting manifest using the
 
 __Note__ that __drupal_domain__ is the site domain name used for host header routing via the ingress proxy.
 
-## Drupal Test Data
+## Sample Data
 
 In the __data__ folder there is a __drupadb_sample.sql__ file that will load a sample drupal data set into a __drupaldb__ database.  This can be done by connecting to the NodePort that exposes the MariaDB:
 
@@ -73,7 +81,7 @@ In the deployment configuration file, the settings for the NFS mapping are as fo
 
 > Unfortunately this requires the manual step of pre-configuring the sample files on the target NFS share before drupal stack deployment.
 
-## Drupal Tectonic Ingress
+## Tectonic Ingress
 
 A sample __Tectonic Ingress__ is created that will do host header routing for the __drupal_domain__ over port 80 (SSL termination coming soon).
 
@@ -81,7 +89,7 @@ A sample __Tectonic Ingress__ is created that will do host header routing for th
 
 > This is used in conjuction with the generated blazemeter scripts to perform the load testing.
 
-## Drupal Blazemeter Load Testing
+## Blazemeter Load Testing
 
 Example [Blazemeter](https://www.blazemeter.com/) scripts are created based on the configured __drupal_domain__ and sample data URLs to exert __moderate__ and __heavy__ load on the __drupal stack__.
 
@@ -93,7 +101,7 @@ or
 
 > These can be adjusted and extended as needed and serve as examples.
 
-## Drupal Rolling Deployments
+## Rolling Deployments
 
 Simply updating the image to the __themed__ variant is a good way to test rolling deployments.  Manually edit the generated __drupal.yml__ file and change the __image/tag__:
 
