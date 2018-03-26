@@ -1,11 +1,11 @@
-Drupal7 on Kubernetes
-=====================
+Drupal on Kubernetes
+====================
 
 Drupal manifests for kubernetes deployment.
 
 ## Ansible Template Approach
 
-Uses ansible templates to generate __Drupal7__ yaml manifests based on configuration information supplied via an ansible inventory file.
+Uses ansible templates to generate __Drupal__ yaml manifests based on configuration information supplied via an ansible inventory file.
 
 In the __deployments__ folder create a sub-folder that matches the name of the  deployment/stack name (see the example in the __drupal7-example__ folder).
 
