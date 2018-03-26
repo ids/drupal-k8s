@@ -59,6 +59,8 @@ This values supplied in this file will generate the resulting manifest using the
 
 __Note__ that __drupal_domain__ is the site domain name used for host header routing via the ingress proxy.
 
+> The __template_target__ inventory group should always contain __localhost__ as the location of the template generation takes place locally.  A future __Helm__ chart will deprecate the use of ansible.
+
 ## Sample Data
 
 In the __data__ folder there is a __drupadb_sample.sql__ file that will load a sample drupal data set into a __drupaldb__ database.  This can be done by connecting to the NodePort that exposes the MariaDB:
