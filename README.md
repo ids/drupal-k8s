@@ -36,7 +36,7 @@ Fairly self explanatory, adjust to your environment:
     drupal_domain=drupal-internal.idstudios.io
 
     drupal_files_nfs_server=192.168.1.107
-    drupal_nfs_files_path="/idstudios-files-drupal-test"
+    drupal_files_nfs_path="/idstudios-files-drupal-test"
     drupal_files_volume_size=10Gi
 
     drupal_db_host=staging-galera-haproxy
@@ -68,7 +68,7 @@ Expand the __drupal_files.tar.gz__ on the host mounted NFS share and then ensure
 In the deployment configuration file, the settings for the NFS mapping are as follows:
 
     drupal_files_nfs_server=<nfs server>
-    drupal_nfs_files_path="/<nfs path to drupal files folder>"
+    drupal_files_nfs_path="/<nfs path to drupal files folder>"
     drupal_files_volume_size=<size of volume allocation> (eg. 10Gi)
 
 > Unfortunately this requires the manual step of pre-configuring the sample files on the target NFS share before drupal stack deployment.

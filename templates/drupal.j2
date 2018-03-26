@@ -12,7 +12,7 @@ spec:
     - ReadWriteOnce
   nfs:
     server: "{{ drupal_files_nfs_server }}"
-    path: "{{ drupal_nfs_files_path }}"
+    path: "{{ drupal_files_nfs_path }}"
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
