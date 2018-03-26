@@ -37,7 +37,11 @@ metadata:
   labels:
     app: {{ drupal_stack_name }}-drupal
 spec:
-  replicas: 1
+  replicas: 3
+  minReadySeconds: 10
+  strategy:
+    rollingUpdate:
+      maxSurge: 100
   selector:
     matchLabels:
       app: {{ drupal_stack_name }}-drupal
@@ -46,6 +50,7 @@ spec:
       labels:
         app: {{ drupal_stack_name }}-drupal
     spec:
+      terminationGracePeriodSeconds: 60
       containers:
       - name: {{ drupal_stack_name }}-drupal
         image: {{ drupal_docker_image }}
