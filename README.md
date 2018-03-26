@@ -33,6 +33,8 @@ Fairly self explanatory, adjust to your environment:
     drupal_docker_image=idstudios/drupal7-docker:plain
     drupal_nodeport=30200
 
+    drupal_domain=drupal-internal.idstudios.io
+
     drupal_files_nfs_server=192.168.1.107
     drupal_files_path="/idstudios-files-drupal-test"
     drupal_files_volume_size=10Gi
@@ -46,3 +48,37 @@ Fairly self explanatory, adjust to your environment:
     localhost
 
 This values supplied in this file will generate the resulting manifest using the ansible j2 template.
+
+__Note__ that __drupal_domain__ is the site domain name used for host header routing via the ingress proxy.
+
+## Drupal Test Data
+
+In the __data__ folder there is a __drupadb_sample.sql__ file that will load a sample drupal data set into a __drupaldb__ database.  This can be done by connecting to the NodePort that exposes the MariaDB:
+
+    mysql -h <ingress url> --port <node port> -u <mysql user> -p < drupaldb_sample.sql
+
+Eg.
+
+    mysql -h core-ingress.idstudios.io --port 31306 -u root -p < drupaldb_sample.sql
+
+The sample Drupal7 database data is paired with some sample image uploads, that are expected to reside on the shared NFS volume that holds the file uploads (shared among all of the front end instances of Drupal).  These sample files are located in the __data__ directory, as __drupal_files.tar.gz__.
+
+Expand the __drupal_files.tar.gz__ on the host mounted NFS share and then ensure that the deployment configuration references that folder as the shared host mounted NFS share:
+
+In the deployment configuration file, the settings for the NFS mapping are as follows:
+
+    drupal_files_nfs_server=<nfs server>
+    drupal_files_path="/<nfs path to drupal files folder>"
+    drupal_files_volume_size=<size of volume allocation> (eg. 10Gi)
+
+> Unfortunately this requires the manual step of pre-configuring the sample files on the target NFS share before drupal stack deployment.
+
+## Drupal Rolling Deployments
+
+Simply updating the image to the __themed__ variant is a good way to test rolling deployments.  Manually edit the generated __drupal.yml__ file and change the __image/tag__ and then simply apply:
+
+    kubectl apply -f drupal.yml
+
+> You can use the __idstudios/drupal:themed__ variant to test a deployment.
+
+The deployment will begin a rolling update, as this is what __Deployments__ do by default in Kubernetes.

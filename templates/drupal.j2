@@ -30,7 +30,7 @@ spec:
       volume: {{ drupal_stack_name }}-drupal-files-volume
 ---
 apiVersion: extensions/v1beta1
-kind: ReplicaSet
+kind: Deployment
 metadata:
   name: {{ drupal_stack_name }}-drupal
   namespace: {{ drupal_stack_namespace }}

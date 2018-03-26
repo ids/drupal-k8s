@@ -37,7 +37,7 @@
     run_once: true
     become: false
 
-  - name: Generate the CoreOS Tectonic manifest
+  - name: Generate the CoreOS Tectonic Ingress manifest
     local_action:
       module: template
       src: templates/drupal-tectonic-ingress.j2
@@ -45,7 +45,6 @@
       mode: 0755
     run_once: true
     become: false
-    
 
   - name: Ensure the deployment folder exists
     local_action:
