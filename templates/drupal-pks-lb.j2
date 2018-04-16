@@ -6,6 +6,7 @@ metadata:
 spec:
   ports:
   - port: {{ drupal_service_port }}
+    targetPort: 80
     protocol: TCP
   selector:
     app: {{ drupal_stack_name }}-drupal
