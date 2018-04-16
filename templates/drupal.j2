@@ -9,7 +9,7 @@ spec:
   capacity:
     storage: {{ drupal_files_volume_size }}
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   nfs:
     server: "{{ drupal_files_nfs_server }}"
     path: "{{ drupal_files_nfs_path }}"
@@ -24,7 +24,7 @@ spec:
     requests:
       storage: {{ drupal_files_volume_size }}
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   selector:
     matchLabels:
       volume: {{ drupal_stack_name }}-drupal-files-volume
@@ -89,12 +89,6 @@ spec:
     name: http
     protocol: TCP
     targetPort: 80
-    nodePort: {{ drupal_nodeport }}
   selector:
     app: {{ drupal_stack_name }}-drupal
-  type: NodePort
-  sessionAffinity: None
-  externalTrafficPolicy: Cluster
-status:
-  loadBalancer: {}
     

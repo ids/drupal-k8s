@@ -35,6 +35,8 @@ Front end proxying and ingress via Traefik, Nginx or Tectonic Ingress is left as
 
 Fairly self explanatory, adjust to your environment:
 
+### CoreOS Example
+
     [all:vars]
     drupal_stack_name=drupal7
     drupal_stack_namespace=web
@@ -55,6 +57,28 @@ Fairly self explanatory, adjust to your environment:
     [template_target]
     localhost
 
+### VMware PKS Example
+
+    [all:vars]
+    drupal_stack_name=test
+    drupal_stack_namespace=web
+    drupal_docker_image=idstudios/drupal:plain
+    drupal_nodeport=30200
+
+    drupal_domain=drupal-internal.idstudios.io
+
+    drupal_files_nfs_server=192.168.1.200
+    drupal_files_nfs_path="/data/drupal/test/drupal_files"
+    drupal_files_volume_size=10Gi
+
+    drupal_db_host=test-galera-haproxy
+    drupal_db_name=drupaldb 
+    drupal_db_user=root 
+    drupal_db_password=Fender2000
+
+    [template_target]
+    localhost
+
 This values supplied in this file will generate the resulting manifest using the ansible j2 template.
 
 __Note__ that __drupal_domain__ is the site domain name used for host header routing via the ingress proxy.
@@ -63,7 +87,7 @@ __Note__ that __drupal_domain__ is the site domain name used for host header rou
 
 ## Sample Data
 
-In the __data__ folder there is a __drupadb_sample.sql__ file that will load a sample drupal data set into a __drupaldb__ database.  This can be done by connecting to the NodePort that exposes the MariaDB:
+In the __data__ folder there is a __drupadb_sample.sql__ file that will load a sample drupal data set into a __drupaldb__ database.  This can be done by connecting to the NodePort (CoreOS) or Load Balancer (PKS) that exposes the MariaDB:
 
     mysql -h <ingress url> --port <node port> -u <mysql user> -p < drupaldb_sample.sql
 
@@ -83,9 +107,18 @@ In the deployment configuration file, the settings for the NFS mapping are as fo
 
 > Unfortunately this requires the manual step of pre-configuring the sample files on the target NFS share before drupal stack deployment.
 
+## VMware PKS LoadBalaner Ingress
+
+A sample __VMware PKS__ _LoadBalancer_ manifest is created that will create a dedicated load balancer exposing __drupal_service_port__ (SSL termination coming soon).
+
+    kubectl apply -f drupal-pks-lb.yml
+
+> This is used in conjuction with the generated blazemeter scripts to perform the load testing.
+
+
 ## Tectonic Ingress
 
-A sample __Tectonic Ingress__ is created that will do host header routing for the __drupal_domain__ over port 80 (SSL termination coming soon).
+A sample __Tectonic Ingress__ manifest is created that will do host header routing for the __drupal_domain__ over port 80 (SSL termination coming soon).
 
     kubectl apply -f drupal-tectonic-ingress.yml
 

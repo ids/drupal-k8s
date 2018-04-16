@@ -1,5 +1,7 @@
 deployments/**
-!deployments/drupal7-example
-!deployments/drupal7-example/drupal.conf
+!deployments/coreos-example
+!deployments/coreos-example/drupal.conf
+!deployments/pks-example
+!deployments/pks-example/drupal.conf
 !deployments/README.md
 *.retry

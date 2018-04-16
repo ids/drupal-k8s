@@ -18,12 +18,29 @@
   - debug: var=cluster_pkg_folder
     run_once: true
 
+  - name: Determine service port
+    set_fact:
+      drupal_service_port: 80
+    when: drupal_service_port is undefined
+    run_once: true
+
+  - debug: var=drupal_service_port
+    run_once: true
+
   - set_fact: drupal_deployment_home="deployments/{{ cluster_pkg_folder }}"
 
   - name: Ensure the deployment folder exists
     local_action:
       module: shell
       _raw_params: "if [ ! -d {{ drupal_deployment_home }} ]; then mkdir {{ drupal_deployment_home }}; fi"
+    become: false
+    run_once: true
+    ignore_errors: true
+
+  - name: Purge existing yaml 
+    local_action:
+      module: shell
+      _raw_params: "cd {{ drupal_deployment_home }} && rm *.yml"
     become: false
     run_once: true
     ignore_errors: true
@@ -45,6 +62,17 @@
       mode: 0755
     run_once: true
     become: false
+    when: drupal_node_port is defined and drupal_service_port is undefined
+
+  - name: Generate the PKS LB manifest
+    local_action:
+      module: template
+      src: templates/drupal-pks-lb.j2
+      dest: "{{ drupal_deployment_home }}/drupal-pks-lb.yml"
+      mode: 0755
+    run_once: true
+    become: false
+    when: drupal_service_port is defined
 
   - name: Ensure the deployment folder exists
     local_action:
