@@ -7,8 +7,9 @@ Drupal manifests for kubernetes deployment.
 2. [Ansible Hosts File Configuration](#ansible-hosts-file-configuration)
 3. [Sample Data](#sample-data)
 4. [Blazemeter Load Testing](#blazemeter-load-testing)
-4. [Tectonic Ingress](#tectonic-ingress)
-4. [Rolling Deployments](#rolling-deployments)
+5. [VMware PKS LoadBalancer Ingress](#vmware-pks-loadbalancer-ingress)
+6. [Tectonic Ingress](#tectonic-ingress)
+7. [Rolling Deployments](#rolling-deployments)
 
 
 ## Ansible Template Generated Manifests
