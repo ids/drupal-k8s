@@ -107,7 +107,7 @@ In the deployment configuration file, the settings for the NFS mapping are as fo
 
 > Unfortunately this requires the manual step of pre-configuring the sample files on the target NFS share before drupal stack deployment.
 
-## VMware PKS LoadBalaner Ingress
+## VMware PKS LoadBalancer Ingress
 
 A sample __VMware PKS__ _LoadBalancer_ manifest is created that will create a dedicated load balancer exposing __drupal_service_port__ (SSL termination coming soon).
 
