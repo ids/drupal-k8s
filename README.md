@@ -61,18 +61,18 @@ Fairly self explanatory, adjust to your environment:
 ### VMware PKS Example
 
     [all:vars]
-    drupal_stack_name=test
+    drupal_stack_name=drupal7
     drupal_stack_namespace=web
-    drupal_docker_image=idstudios/drupal:plain
-    drupal_nodeport=30200
+    drupal_docker_image=idstudios/drupal7-docker:plain
 
-    drupal_domain=drupal-internal.idstudios.io
+    drupal_domain=drupal-nsx.onprem.idstudios.io
+    drupal_service_port=8000
 
-    drupal_files_nfs_server=192.168.1.200
-    drupal_files_nfs_path="/data/drupal/test/drupal_files"
+    drupal_files_nfs_server=192.168.1.107
+    drupal_files_nfs_path="/idstudios-files-drupal-test"
     drupal_files_volume_size=10Gi
 
-    drupal_db_host=test-galera-haproxy
+    drupal_db_host=pks-galera-haproxy
     drupal_db_name=drupaldb 
     drupal_db_user=root 
     drupal_db_password=Fender2000
@@ -114,16 +114,17 @@ A sample __VMware PKS__ _LoadBalancer_ manifest is created that will create a de
 
     kubectl apply -f drupal-pks-lb.yml
 
-> This is used in conjuction with the generated blazemeter scripts to perform the load testing.
+And then check for the assigned IP address:
 
+    kubectl get svc
+
+You should see the assigned Drupal LB hosted on the designated __drupal_service_port__.
 
 ## Tectonic Ingress
 
 A sample __Tectonic Ingress__ manifest is created that will do host header routing for the __drupal_domain__ over port 80 (SSL termination coming soon).
 
     kubectl apply -f drupal-tectonic-ingress.yml
-
-> This is used in conjuction with the generated blazemeter scripts to perform the load testing.
 
 ## Blazemeter Load Testing
 

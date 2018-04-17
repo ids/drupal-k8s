@@ -62,7 +62,7 @@
       mode: 0755
     run_once: true
     become: false
-    when: drupal_node_port is defined and drupal_service_port is undefined
+    when: drupal_nodeport is defined 
 
   - name: Generate the PKS LB manifest
     local_action:
@@ -72,7 +72,7 @@
       mode: 0755
     run_once: true
     become: false
-    when: drupal_service_port is defined
+    when: drupal_nodeport is undefined
 
   - name: Ensure the deployment folder exists
     local_action:
