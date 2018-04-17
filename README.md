@@ -7,7 +7,7 @@ Drupal manifests for kubernetes deployment.
 2. [Ansible Hosts File Configuration](#ansible-hosts-file-configuration)
 3. [Sample Data](#sample-data)
 4. [Blazemeter Load Testing](#blazemeter-load-testing)
-5. [VMware PKS LoadBalancer Ingress](#vmware-pks-loadbalancer-ingress)
+5. [VMware PKS LoadBalancer](#vmware-pks-loadbalancer)
 6. [Tectonic Ingress](#tectonic-ingress)
 7. [Rolling Deployments](#rolling-deployments)
 
@@ -108,7 +108,7 @@ In the deployment configuration file, the settings for the NFS mapping are as fo
 
 > Unfortunately this requires the manual step of pre-configuring the sample files on the target NFS share before drupal stack deployment.
 
-## VMware PKS LoadBalancer Ingress
+## VMware PKS LoadBalancer
 
 A sample __VMware PKS__ _LoadBalancer_ manifest is created that will create a dedicated load balancer exposing __drupal_service_port__ (SSL termination coming soon).
 
