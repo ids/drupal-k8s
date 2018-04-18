@@ -1,0 +1,31 @@
+cache:
+  untracked: true
+  key: "$CI_BUILD_REF_NAME"
+
+before_script:
+  - echo "This is the before script in action"
+  - ls -al $PWD
+
+stages:
+  - deploy
+
+variables:
+  CONTAINER_IMAGE: ${CI_REGISTRY}/${CI_PROJECT_PATH}:${CI_BUILD_REF_NAME}_${CI_BUILD_REF}
+  CONTAINER_IMAGE_LATEST: ${CI_REGISTRY}/${CI_PROJECT_PATH}:latest
+  DOCKER_DRIVER: overlay2
+
+  KUBECONFIG: /etc/deploy/config
+  STAGING_NAMESPACE: web-staging
+  PRODUCTION_NAMESPACE: web
+
+deploy:
+  stage: deploy
+  image: lwolf/helm-kubectl-docker:v152_213
+  before_script:
+    - mkdir -p /etc/deploy
+    - echo ${kube_config} | base64 -d > ${KUBECONFIG}
+    - kubectl config use-context k8s-01
+  script:
+    - kubectl get pods -n kube-system
+  only:
+  - master
