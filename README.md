@@ -41,7 +41,7 @@ Fairly self explanatory, adjust to your environment:
     [all:vars]
     drupal_stack_name=drupal7
     drupal_stack_namespace=web
-    drupal_docker_image=idstudios/drupal7-docker:plain
+    drupal_docker_image=idstudios/drupal:plain
     drupal_nodeport=30200
 
     drupal_domain=drupal-internal.idstudios.io
@@ -63,7 +63,7 @@ Fairly self explanatory, adjust to your environment:
     [all:vars]
     drupal_stack_name=drupal7
     drupal_stack_namespace=web
-    drupal_docker_image=idstudios/drupal7-docker:plain
+    drupal_docker_image=idstudios/drupal:plain
 
     drupal_domain=drupal-nsx.onprem.idstudios.io
     drupal_service_port=8000
@@ -87,6 +87,8 @@ __Note__ that __drupal_domain__ is the site domain name used for host header rou
 > The __template_target__ inventory group should always contain __localhost__ as the location of the template generation takes place locally.  A future __Helm__ chart will deprecate the use of ansible.
 
 ## Sample Data
+
+> Note that with the new image `drupal_docker_image=idstudios/drupal:plain` you do not need to perform the manual data loads, or unpack the sample image files to the NFS share, the image will take care of this automatically at startup.  Replicas has been set to 1 so that the intialization does not enter race, make sure to scale up for load tests.
 
 In the __data__ folder there is a __drupadb_sample.sql__ file that will load a sample drupal data set into a __drupaldb__ database.  This can be done by connecting to the NodePort (CoreOS) or Load Balancer (PKS) that exposes the MariaDB:
 
